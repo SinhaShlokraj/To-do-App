@@ -3,39 +3,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>To-Do App</title>
-  <link href="style.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet" />
+  <title>To-Do List</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"/>
 </head>
 <body>
-  <div class="container">
-    <div class="text-end my-3">
-      <button class="btn btn-outline-dark btn-sm" onclick="toggleTheme()" title="Toggle Dark Mode"><i class="fas fa-adjust"></i></button>
-      <select class="form-select form-select-sm d-inline w-auto ms-2" onchange="changeTheme(this.value)">
-        <option value="default">Default</option>
+  <div class="container py-3">
+    <div class="text-end mb-2">
+      <button class="btn btn-dark btn-sm" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+        <i class="fas fa-adjust"></i>
+      </button>
+      <select onchange="changeTheme(this.value)" class="form-select-sm ms-2">
+        <option value="">Select Theme</option>
         <option value="nature">Nature</option>
         <option value="space">Space</option>
+        <option value="minimal">Minimal</option>
       </select>
     </div>
-
-    <div class="card shadow-lg p-4 todo-card bg-white" id="todo-card">
-      <h2 class="text-center text-primary mb-4">✨ Task Manager ✨</h2>
-      <div class="input-group mb-3">
-        <input type="text" id="todo-input" class="form-control" placeholder="Enter task..."/>
-        <button class="btn btn-success" onclick="addTodo()"><i class="fas fa-plus"></i> Add</button>
+    <div class="card todo-card shadow-lg p-4">
+      <h2 class="text-center text-primary mb-4">Your To-Do List</h2>
+      <div class="input-group mb-4">
+        <input type="text" id="todo-input" class="form-control" placeholder="Add a new task..."/>
+        <button class="btn btn-success" onclick="addTodo()">Add</button>
+        <button class="btn btn-outline-secondary" onclick="exportToTxt()">Export TXT</button>
       </div>
       <ul class="list-group" id="todo-list"></ul>
-      <div class="text-center mt-3">
-        <button class="btn btn-outline-secondary btn-sm" onclick="exportToTxt()">Export as TXT</button>
-      </div>
     </div>
+    <footer class="text-center mt-5">
+      <small>All rights reversed.</small>
+    </footer>
   </div>
-
-  <footer class="footer">
-    <p>© All rights reversed</p>
-  </footer>
-
-  <script src="app.js" defer></script>
+  <script src="app.js"></script>
 </body>
 </html>
