@@ -1,39 +1,38 @@
-let todos = JSON.parse(localStorage.getItem('todos')) || [];
-let isDarkMode = JSON.parse(localStorage.getItem('darkMode')) || false;
-let currentTheme = localStorage.getItem('theme') || 'default';
+let todos = JSON.parse(localStorage.getItem("todos")) || [];
+let isDark = false;
 
 function saveTodos() {
-  localStorage.setItem('todos', JSON.stringify(todos));
+  localStorage.setItem("todos", JSON.stringify(todos));
 }
 
 function renderTodos() {
-  const list = document.getElementById('todo-list');
-  list.innerHTML = '';
+  const list = document.getElementById("todo-list");
+  list.innerHTML = "";
   todos.forEach((todo, index) => {
-    const li = document.createElement('li');
-    li.className = 'list-group-item';
-    if (todo.completed) li.classList.add('strikethrough');
+    const li = document.createElement("li");
+    li.className = "list-group-item d-flex justify-content-between align-items-center";
+    if (todo.completed) li.classList.add("completed");
 
     li.innerHTML = `
-      <span onclick="toggleComplete(${index})" style="cursor:pointer;">${todo.text} <small class="text-muted">[${todo.timestamp}]</small></span>
-      <div>
-        <button class="btn btn-sm btn-outline-warning me-1" onclick="editTodo(${index})"><i class="fas fa-edit"></i></button>
-        <button class="btn btn-sm btn-outline-danger" onclick="deleteTodo(${index})"><i class="fas fa-trash"></i></button>
+      <div onclick="toggleComplete(${index})" style="cursor:pointer;">
+        <strong>${todo.text}</strong><br/><small>${todo.timestamp}</small>
       </div>
-    `;
+      <div>
+        <button class="btn btn-sm btn-warning me-2" onclick="editTodo(${index})"><i class="fas fa-edit"></i></button>
+        <button class="btn btn-sm btn-danger" onclick="deleteTodo(${index})"><i class="fas fa-trash"></i></button>
+      </div>`;
     list.appendChild(li);
   });
 }
 
 function addTodo() {
-  const input = document.getElementById('todo-input');
+  const input = document.getElementById("todo-input");
   const text = input.value.trim();
-  if (text !== '') {
-    const timestamp = new Date().toLocaleString();
-    todos.push({ text, timestamp, completed: false });
+  if (text) {
+    todos.push({ text, timestamp: new Date().toLocaleString(), completed: false });
+    input.value = "";
     saveTodos();
     renderTodos();
-    input.value = '';
   }
 }
 
@@ -44,9 +43,9 @@ function deleteTodo(index) {
 }
 
 function editTodo(index) {
-  const newText = prompt("Edit your task:", todos[index].text);
+  const newText = prompt("Edit task:", todos[index].text);
   if (newText) {
-    todos[index].text = newText.trim();
+    todos[index].text = newText;
     todos[index].timestamp = new Date().toLocaleString();
     saveTodos();
     renderTodos();
@@ -59,33 +58,48 @@ function toggleComplete(index) {
   renderTodos();
 }
 
+function exportToTxt() {
+  const content = todos.map(t => `- ${t.text} (${t.timestamp})`).join("\n");
+  const blob = new Blob([content], { type: "text/plain" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "todo-list.txt";
+  a.click();
+}
+
 function toggleTheme() {
-  isDarkMode = !isDarkMode;
-  document.body.classList.toggle('dark-mode', isDarkMode);
-  localStorage.setItem('darkMode', JSON.stringify(isDarkMode));
+  document.body.classList.toggle("dark-mode");
 }
 
 function changeTheme(theme) {
-  document.body.classList.remove('nature', 'space', 'default');
-  if (theme !== 'default') document.body.classList.add(theme);
-  currentTheme = theme;
-  localStorage.setItem('theme', theme);
+  let bg = "";
+  switch (theme) {
+    case "nature":
+      bg = "https://images.unsplash.com/photo-1503264116251-35a269479413?auto=format&fit=crop&w=1500&q=80";
+      break;
+    case "space":
+      bg = "https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1500&q=80";
+      break;
+    case "minimal":
+      bg = "https://images.unsplash.com/photo-1496309732348-3627f3f040ee?auto=format&fit=crop&w=1500&q=80";
+      break;
+    default:
+      bg = "";
+  }
+  if (bg) {
+    document.body.style.backgroundImage = `url('${bg}')`;
+  }
 }
 
-function exportToTxt() {
-  const content = todos.map(t => `${t.completed ? "[x]" : "[ ]"} ${t.text} (${t.timestamp})`).join('\n');
-  const blob = new Blob([content], { type: "text/plain" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.href = url;
-  a.download = "todo-list.txt";
-  a.click();
-  URL.revokeObjectURL(url);
-}
+// Load saved todos on start
+renderTodos();
 
-// Load on start
-document.addEventListener('DOMContentLoaded', () => {
-  renderTodos();
-  if (isDarkMode) document.body.classList.add('dark-mode');
-  if (currentTheme !== 'default') document.body.classList.add(currentTheme);
-});
+// Service Worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('./serviceWorker.js')
+      .then(reg => console.log('✅ Service Worker registered!', reg))
+      .catch(err => console.error('❌ Service Worker registration failed:', err));
+  });
+}
