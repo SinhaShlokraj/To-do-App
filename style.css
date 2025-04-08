@@ -1,89 +1,52 @@
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #e0eafc, #cfdef3);
   transition: background 0.4s ease;
-  background-image: url('https://wallpapercave.com/wp/wp2757874.jpg');
-  background-size: cover;
-  background-attachment: fixed;
-}
-
-body.nature-theme {
-  background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1950&q=80');
-}
-
-body.space-theme {
-  background-image: url('https://wallpaperaccess.com/full/1095391.jpg');
-}
-
-body.dark-mode {
-  background: #1e1e2f !important;
-  color: #f5f5f5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 .todo-card {
   max-width: 700px;
-  margin: 60px auto;
+  margin: 40px auto;
   border-radius: 20px;
-  transition: background 0.4s ease, transform 0.3s ease;
+  transition: background 0.4s ease;
 }
 
 .todo-card:hover {
   transform: scale(1.01);
-}
-
-.todo-card.dark-mode {
-  background-color: #2a2a3b !important;
-  color: #f5f5f5;
-}
-
-.marquee {
-  font-size: 1.5rem;
-  color: #0d6efd;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
-.btn-custom {
-  border-radius: 50px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
 .list-group-item {
   background-color: #ffffffd9;
-  border: none;
   border-radius: 10px;
   margin-bottom: 10px;
-  transition: all 0.3s ease-in-out;
-  animation: fadeIn 0.5s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.dark-mode .list-group-item {
-  background-color: #3a3a4d;
-  color: #fff;
-}
-
-.list-group-item:hover {
-  background-color: #f0f8ff;
-  transform: scale(1.01);
-}
-
-.dark-mode .list-group-item:hover {
-  background-color: #505065;
-}
-
-.timestamp {
-  font-size: 0.8rem;
-  color: #888;
-}
-
-.dark-mode .timestamp {
-  color: #bbb;
-}
-
-.task-completed {
+.strikethrough {
   text-decoration: line-through;
   opacity: 0.6;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+footer.footer {
+  text-align: center;
+  padding: 10px;
+  margin-top: auto;
+  background-color: #f1f1f1;
+}
+
+body.dark-mode {
+  background-color: #1e1e2f;
+  color: #fff;
+}
+body.nature {
+  background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+}
+body.space {
+  background: url('https://images.unsplash.com/photo-1586105251261-72a756497a12?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
 }
